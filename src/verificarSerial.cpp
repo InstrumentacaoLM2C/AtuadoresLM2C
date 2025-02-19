@@ -1,6 +1,8 @@
 #include "../include/functions.h"
 #include "../include/macros.h"
 
+//nmhkjh
+
 void VerificarSerial(){
 
     char motor = '1';
