@@ -1,46 +1,48 @@
 #include <Arduino.h>
+#include "functions.h"
+#include "macros.h"
+#include <AccelStepper.h>
 
-// Defina os pinos de controle do primeiro motor
-#define STEP_PIN_1 PA8  // Pino de passo (STEP) do Motor 1
-#define DIR_PIN_1 PA9   // Pino de direção (DIR) do Motor 1
-#define ENABLE_PIN_1 PA10  // Pino de ENABLE do Motor 1
+//Declaração de variáveis para motores
+AccelStepper* motor1 = nullptr;
+AccelStepper* motor2 = nullptr;
 
-// Defina os pinos de controle do segundo motor
-#define STEP_PIN_2 PA11  // Pino de passo (STEP) do Motor 2
-#define DIR_PIN_2 PA12   // Pino de direção (DIR) do Motor 2
-#define ENABLE_PIN_2 PA13  // Pino de ENABLE do Motor 2
-
-#define OK                                  0
-#define ERROR_MOTOR_NAO_SELECIONADO         1
-
-// Inicialize os motores com a interface "DRIVER" (STEP/DIR)
-AccelStepper motor1(AccelStepper::DRIVER, STEP_PIN_1, DIR_PIN_1);
-AccelStepper motor2(AccelStepper::DRIVER, STEP_PIN_2, DIR_PIN_2);
+//Declaração de variáveis para paramêtros do motor
+int velocidadeMaxima, aceleracaoMaxima, velocidade;
 
 void setup() {
   // Configura os pinos de ENABLE como saída
-  pinMode(ENABLE_PIN_1, OUTPUT);
-  pinMode(ENABLE_PIN_2, OUTPUT);
+  pinMode(PIN_ENABLE_1, OUTPUT);
+  pinMode(PIN_ENABLE_2, OUTPUT);
 
   // Desabilita os motores inicialmente (ENABLE em HIGH)
-  digitalWrite(ENABLE_PIN_1, HIGH);
-  digitalWrite(ENABLE_PIN_2, HIGH);
+  digitalWrite(PIN_ENABLE_1, HIGH);
+  digitalWrite(PIN_ENABLE_2, HIGH);
+
+  //Configuração de velocidade e aceleração
+  velocidadeMaxima = 8000;
+  aceleracaoMaxima = 200;
+  velocidade = 1000;
 
    // Configurações iniciais para o Motor 1
-  
-  
+  motor1 = CriarMotor(PIN_PASSO_1, PIN_DIR_1, PIN_ENABLE_1, velocidadeMaxima, aceleracaoMaxima, velocidade);
+  motor2 = CriarMotor(PIN_PASSO_2, PIN_DIR_2, PIN_ENABLE_2, velocidadeMaxima, aceleracaoMaxima, velocidade);
 }
 
 void loop() {
-  // Habilita os motores (ENABLE em LOW)
-  digitalWrite(ENABLE_PIN_1, LOW);
-  digitalWrite(ENABLE_PIN_2, LOW);
 
-  // Move ambos os motores no sentido horário
+  //Chamada de funções
+  VerificarSerial();
+
+  /* // Habilita os motores (ENABLE em LOW)
+  digitalWrite(PIN_ENABLE_1, LOW);
+  digitalWrite(PIN_ENABLE_2, LOW);
+
+  // Move motor
   int MoverMotor (char numeroMotor);
   
-  MoverMotor (numeroMotor){
-    if !numeroMotor{  
+  MoverMotor (motor, distancia){
+    if (!motor){  
       return ERROR_MOTOR_NAO_SELECIONADO;
     }
     numeroMotor.move(distanciaMotor);
@@ -73,4 +75,5 @@ void loop() {
   digitalWrite(ENABLE_PIN_2, HIGH);
 
   delay(1000);  // Aguarda 1 segundo antes de reiniciar o ciclo
+*/
 }

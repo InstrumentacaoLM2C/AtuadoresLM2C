@@ -1,5 +1,6 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
+#include <AccelStepper.h>
 
 // Configurações iniciais para os Motores 
 int ConfigurarMotor (AccelStepper* numeroMotor, int velocidadeMaximaMotor, int aceleracaoMotor, int velocidadeMotor); 
@@ -12,5 +13,9 @@ int MoverMotor(AccelStepper* motor, long distancia);
 
 // Função para desabilitar um motor
 void DesabilitarMotor(AccelStepper* motor, int enablePin);
+
+void VerificarSerial();
+
+void moverUniforme();
 
 #endif

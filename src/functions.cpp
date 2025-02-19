@@ -2,7 +2,7 @@
 #include "../include/macros.h"
 #include <AccelStepper.h>
 
-  AccelStepper* CriarMotor(int stepPin, int dirPin, int enablePin, int velocidadeMaxima, int aceleracao, int velocidade) {
+AccelStepper* CriarMotor(int stepPin, int dirPin, int enablePin, int velocidadeMaxima, int aceleracao, int velocidade) {
     // Aloca dinamicamente um objeto AccelStepper
     AccelStepper* motor = new AccelStepper(AccelStepper::DRIVER, stepPin, dirPin);
 
@@ -19,8 +19,7 @@
 }
 
 // Função para mover um motor
-int MoverMotor(AccelStepper* motor, long distancia) 
-{
+int moverMotor(AccelStepper* motor, long distancia) {
     if (!motor) { // Verifica se o ponteiro do motor é válido
         return ERROR_MOTOR_NAO_SELECIONADO;
     }
@@ -32,10 +31,9 @@ int MoverMotor(AccelStepper* motor, long distancia)
 }
 
 // Função para desabilitar um motor
-void DesabilitarMotor(AccelStepper* motor, int enablePin) {
+void desabilitarMotor(AccelStepper* motor, int enablePin) {
     if (motor) {
         digitalWrite(enablePin, HIGH); // Desabilita o motor
     }
 }
 
-  
