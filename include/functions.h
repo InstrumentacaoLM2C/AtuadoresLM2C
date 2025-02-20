@@ -18,4 +18,20 @@ void VerificarSerial();
 
 void moverUniforme();
 
+void moverAcelerado1();
+
+void moverAcelerado2();
+
+void moverUniforme1();
+
+void moverUniforme2();
+
+void paraMotor1();
+
+void paraMotor2();
+
+void calibracao();
+
+void subsidencia();
+
 #endif

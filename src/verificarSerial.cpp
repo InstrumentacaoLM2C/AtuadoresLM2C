@@ -62,7 +62,7 @@ void VerificarSerial(){
     
           break;
     
-          case QTD_PULSOS:         //Se o primeiro caractere é P, envia a quantidade de pulsos
+          case QTD_PULSOS: {         //Se o primeiro caractere é P, envia a quantidade de pulsos
             // a cada pulso se movimenta 0,6 mm -> conta: (1,8 \ (3 * 4)) * 4mm do passo
             String info_qtd_pulsos = data.substring(1);
             if(motor == '1'){
@@ -77,7 +77,7 @@ void VerificarSerial(){
     
             }
           break;
-    
+          }
           case 'G':     //First character is an G = motor accelerates
             if(motor == '1'){
               Serial.println("a"); // Printa a mensagem no aplicativo do vs code:: O motor 1 está se movendo com aceleração!
@@ -127,9 +127,9 @@ void VerificarSerial(){
             }
           break;
           
-          case 'V':         //First character is an V = set velocity
-            x = data.substring(1);
-            y = x.toFloat();
+          case 'V': {        //First character is an V = set velocity
+            String x = data.substring(1);
+            float y = x.toFloat();
             if(200<y<8000){
               if(motor == '1'){  
                 receivedDelay1 = y;
@@ -148,7 +148,7 @@ void VerificarSerial(){
             }
     
           break;
-    
+          }
           case 'n': //para o motor
           
             if(motor == '1'){
@@ -164,28 +164,28 @@ void VerificarSerial(){
     
           break;
     
-          case 'O': //  Insere um valor para a posição calculada do primeiro motor. 
+          case 'O':{ //  Insere um valor para a posição calculada do primeiro motor. 
             delayMicroseconds(1000); 
-            x = data.substring(1);
+            String x = data.substring(1);
             posicao_calculada1 = x.toFloat();
             delayMicroseconds(1000); 
-            posicao_calculadaStr1  = String(posicao_calculada1);
+            posicao_calculadaStr1  = String(posicao_calculada1); 
           break;
-    
-          case 'o': //  Insere um valor para a posição calculada do segundo motor. 
+          }
+          case 'o': { //  Insere um valor para a posição calculada do segundo motor. 
             delayMicroseconds(1000); 
-            x = data.substring(1);
+            String x = data.substring(1);
             posicao_calculada2 = x.toFloat();
             delayMicroseconds(1000); 
             posicao_calculadaStr2  = String(posicao_calculada2);
             //Serial.println('P'+ posicao_calculadaStr2);
           break;
-    
-          case 'J': //sets intercept of the laser
-    
-            x = data.substring(1);
+          }
+          case 'J': { //sets intercept of the laser
+            String  x = data.substring(1);
             zero_laser = x.toFloat();
           break;
+          }
           
           
           case 'I': // Inicia o processo de calibração
@@ -193,8 +193,8 @@ void VerificarSerial(){
     
           break;
     
-          case 'U': //Insere constante de calibração dos motores
-            x = data.substring(1);
+          case 'U': { //Insere constante de calibração dos motores
+            String x = data.substring(1);
             if(motor == 1){
               constanteCalibracao1 = x.toFloat();
             }
@@ -205,12 +205,12 @@ void VerificarSerial(){
             Serial.print("w"); //Printa a constante de calibração no app do VSCode 
             Serial.println(x);
           break;
-    
+          }
     
     
           case 'S': // ativa a funcionalidade do sensor indutivo novamente
             motorParou1 = 0;
-            Serial.print("\Sensor indutivo ativado"); //Printa a constante de calibração no app do VSCode 
+            Serial.print("\nSensor indutivo ativado"); //Printa a constante de calibração no app do VSCode 
           break;
     
           case 'M': //Função para mudar qual motor está sendo utilizado.
@@ -228,8 +228,8 @@ void VerificarSerial(){
             subsidencia(); // Função que movimenta o motor para frente e para trás (2 voltas completas) ativando o mecanismo de subsidência
           break;
     
-          case 'T': // recebe todas as informações do motor de uma vez e aciona o motor
-            x = data.substring(1);
+          case 'T': { // recebe todas as informações do motor de uma vez e aciona o motor
+            String x = data.substring(1);
     
             //código para separar as strings 
             int firstSeparatorIndex = x.indexOf(';');
@@ -245,7 +245,7 @@ void VerificarSerial(){
             //Exemplo T2000;200;B;H#        
             if(motor == '1'){
               //liga motor
-              digitalWrite(driverEn1, 1);
+              digitalWrite(PIN_ENABLE_1, 1);
               //Serial.println("/Motor 1 ligado!");
               //recebe pulsos
               receivedPulsesDistance1 = pulso.toFloat(); //value for the steps
@@ -268,7 +268,7 @@ void VerificarSerial(){
             }
             else if(motor == '2'){
               //liga motor
-              digitalWrite(driverEn2, 1);
+              digitalWrite(PIN_ENABLE_2, 1);
               //Serial.println("/Motor 2 ligado!");
               //recebe pulsos
               receivedPulsesDistance2 = pulso.toFloat(); //value for the steps
@@ -289,6 +289,7 @@ void VerificarSerial(){
               
             }
           break;
+          }
         }
       }
 }

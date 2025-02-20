@@ -30,6 +30,46 @@ int moverMotor(AccelStepper* motor, long distancia) {
     return OK;
 }
 
+void moverAcelerado1(){
+    motor1.setAcceleration(1000);
+    motor1.setMaxSpeed();
+    motor1.move();
+}
+
+void moverAcelerado2(){
+    motor2.setAcceleration(1000);
+    motor2.setMaxSpeed();
+    motor2.move();
+}
+
+void moverUniforme1(){
+    motor1.setAcceleration(20000);
+    motor1.setMaxSpeed();
+    motor1.move();
+}
+
+void moverUniforme2(){
+    motor2.setAcceleration(20000);
+    motor2.setMaxSpeed();
+    motor2.move();
+}
+
+void paraMotor1(){
+    
+}
+
+void paraMotor2(){
+
+}
+
+void calibracao(){
+
+}
+
+void subsidencia(){
+
+}
+
 // Função para desabilitar um motor
 void desabilitarMotor(AccelStepper* motor, int enablePin) {
     if (motor) {
