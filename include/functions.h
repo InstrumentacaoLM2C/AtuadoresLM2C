@@ -14,15 +14,15 @@ int MoverMotor(AccelStepper* motor, long distancia);
 // Função para desabilitar um motor
 void DesabilitarMotor(AccelStepper* motor, int enablePin);
 
-void VerificarSerial();
+void VerificarSerial(AccelStepper* motor1, AccelStepper* motor2, int velocidadeMaxima, int velocidade, int aceleracaoMaxima);
 
-void moverMOtor();
+void moverMotor();
 
-void moverAcelerado();
+void moverAcelerado(AccelStepper* motor, long distancia, int velocidadeMaxima);
 
-void moverUniforme();
+void moverUniforme(AccelStepper* motor, long distancia, int velocidadeMaxima);
 
-void paraMotor();
+void paraMotor(AccelStepper* motor);
 
 void calibracao();
 

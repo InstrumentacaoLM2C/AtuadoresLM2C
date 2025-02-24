@@ -18,7 +18,7 @@ AccelStepper* CriarMotor(int stepPin, int dirPin, int enablePin, int velocidadeM
     return motor; // Retorna o ponteiro para o motor criado
 }
 
-// Função para mover um motor
+// Função para mover um motor (NÃO ESTÁ SENDO UTILIZADA)
 int moverMotor(AccelStepper* motor, long distancia) {
     if (!motor) { // Verifica se o ponteiro do motor é válido
         return ERROR_MOTOR_NAO_SELECIONADO;
@@ -30,7 +30,8 @@ int moverMotor(AccelStepper* motor, long distancia) {
     return OK;
 }
 
-void moverAcelerado(AccelStepper* motor, int velocidadeMaxima, long distancia) {
+// Função para mover o motor com aceleraçao
+void moverAcelerado(AccelStepper* motor, long distancia, int velocidadeMaxima) {
     if (!motor) { // Verifica se o ponteiro do motor é válido
         return; // Retorna sem fazer nada se o ponteiro for inválido
     }
@@ -49,8 +50,8 @@ void moverAcelerado(AccelStepper* motor, int velocidadeMaxima, long distancia) {
 }
 
 
-
-void moverUniforme(AccelStepper* motor, int velocidadeMaxima, long distancia){
+// Função para mover o motor de forma acelerada
+void moverUniforme(AccelStepper* motor, long distancia, int velocidadeMaxima){
     if (!motor) { // Verifica se o ponteiro do motor é válido
         return; // Retorna sem fazer nada se o ponteiro for inválido
     }
@@ -69,7 +70,7 @@ void moverUniforme(AccelStepper* motor, int velocidadeMaxima, long distancia){
 }
 
 
-void paraMotor1(AccelStepper* motor){
+void paraMotor(AccelStepper* motor){
     if (!motor) { // Verifica se o ponteiro do motor é válido
         return; // Retorna sem fazer nada se o ponteiro for inválido
     }
@@ -84,7 +85,7 @@ void paraMotor1(AccelStepper* motor){
 
 
 void calibracao(){
-    
+
 }
 
 void subsidencia(AccelStepper* motor, int velocidadeMaxima, int aceleracao, long distancia){

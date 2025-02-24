@@ -32,48 +32,5 @@ void setup() {
 void loop() {
 
   //Chamada de funções
-  VerificarSerial();
-
-  /* // Habilita os motores (ENABLE em LOW)
-  digitalWrite(PIN_ENABLE_1, LOW);
-  digitalWrite(PIN_ENABLE_2, LOW);
-
-  // Move motor
-  int MoverMotor (char numeroMotor);
-  
-  MoverMotor (motor, distancia){
-    if (!motor){  
-      return ERROR_MOTOR_NAO_SELECIONADO;
-    }
-    numeroMotor.move(distanciaMotor);
-  }
- 
-  motor2.move(1000);  // Define a posição alvo para o Motor 2
-
-  // Executa o movimento até que ambos os motores atinjam a posição
-  while (motor1.distanceToGo() != 0 || motor2.distanceToGo() != 0) {
-    motor1.run();
-    motor2.run();
-  }
-
-  delay(1000);  // Aguarda 1 segundo
-
-  // Move ambos os motores 1000 passos no sentido anti-horário
-  motor1.move(-1000);  // Define a posição alvo para o Motor 1
-  motor2.move(-1000);  // Define a posição alvo para o Motor 2
-
-  // Executa o movimento até que ambos os motores atinjam a posição
-  while (motor1.distanceToGo() != 0 || motor2.distanceToGo() != 0) {
-    motor1.run();
-    motor2.run();
-  }
-
-  delay(1000);  // Aguarda 1 segundo
-  
-  // Desabilita os motores (ENABLE em HIGH)
-  digitalWrite(ENABLE_PIN_1, HIGH);
-  digitalWrite(ENABLE_PIN_2, HIGH);
-
-  delay(1000);  // Aguarda 1 segundo antes de reiniciar o ciclo
-*/
+  VerificarSerial(motor1, motor2, velocidadeMaxima, aceleracaoMaxima, velocidade);
 }

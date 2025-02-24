@@ -3,7 +3,7 @@
 
 //nmhkjh
 
-void VerificarSerial(){
+void VerificarSerial(AccelStepper* motor1, AccelStepper* motor2, int velocidadeMaxima, int velocidade, int aceleracaoMaxima){
 
     char motor = '1';
     char direcao1 = '1';
@@ -81,17 +81,17 @@ void VerificarSerial(){
           case 'G':     //First character is an G = motor accelerates
             if(motor == '1'){
               Serial.println("a"); // Printa a mensagem no aplicativo do vs code:: O motor 1 está se movendo com aceleração!
-              moverAcelerado1();
+              moverAcelerado(motor1, qtdPulsosMotor1, velocidadeMaxima);
             }
             else if(motor == '2'){
               Serial.println("A"); // Printa a mensagem no aplicativo do vs code: O motor 2 está se movendo com aceleração!
-              moverAcelerado2();
+              moverAcelerado(motor2, qtdPulsosMotor2, velocidadeMaxima);
             }
     
           
           break;
     
-          case 'X':
+          case MSG_MOTOR_MOVENDO_COM_ACELERACAO:
             if(motor == '1'){
               Serial.println("a"); // Printa a mensagem no aplicativo do vs code:: O motor 1 está se movendo com aceleração!
               aceleracao1 = 1;
@@ -102,7 +102,7 @@ void VerificarSerial(){
             }
           break;
     
-          case 'x':
+          case MSG_MOTOR_MOVENDO_SEM_ACELERACAO:
             if(motor == '1'){
               Serial.println("a"); // Printa a mensagem no aplicativo do vs code:: O motor 1 está se movendo sem aceleração!
               aceleracao1 = 0;
@@ -114,20 +114,20 @@ void VerificarSerial(){
           break;
     
     
-          case 'H':     //First character is an H = motor spins with constant speed
+          case ATIVAR_MOTOR_VEL_CTE :     //First character is an H = motor spins with constant speed
             if(motor == '1'){
               //Serial.println("/O motor 1 se move com velocidade constante!");
-              moverUniforme1();
+              moverUniforme(motor1, qtdPulsosMotor1, velocidadeMaxima);
               
             }
             else if(motor == '2'){
               //Serial.println("/O motor 2 se move com velocidade constante!");
-              moverUniforme2();
+              moverUniforme(motor2, qtdPulsosMotor2, velocidadeMaxima);
     
             }
           break;
           
-          case 'V': {        //First character is an V = set velocity
+          case DEFINIR_VELOCIDADE: {        //First character is an V = set velocity
             String x = data.substring(1);
             float y = x.toFloat();
             if(200<y<8000){
@@ -149,22 +149,22 @@ void VerificarSerial(){
     
           break;
           }
-          case 'n': //para o motor
+          case PARAR_MOTOR: //para o motor
           
             if(motor == '1'){
-              paraMotor1();
+              paraMotor(motor1);
             }
             else if(motor == '2'){
-              paraMotor2();
+              paraMotor(motor2);
             }
           break;
           
-          case 'N': //para calibração
+          case PARAR_CALIBRACAO : //para calibração
             parar_calibracao = 1;
     
           break;
     
-          case 'O':{ //  Insere um valor para a posição calculada do primeiro motor. 
+          case POSICAO_MOTOR_1 :{ //  Insere um valor para a posição calculada do primeiro motor. 
             delayMicroseconds(1000); 
             String x = data.substring(1);
             posicao_calculada1 = x.toFloat();
@@ -172,7 +172,7 @@ void VerificarSerial(){
             posicao_calculadaStr1  = String(posicao_calculada1); 
           break;
           }
-          case 'o': { //  Insere um valor para a posição calculada do segundo motor. 
+          case POSICAO_MOTOR_2: { //  Insere um valor para a posição calculada do segundo motor. 
             delayMicroseconds(1000); 
             String x = data.substring(1);
             posicao_calculada2 = x.toFloat();
@@ -181,19 +181,19 @@ void VerificarSerial(){
             //Serial.println('P'+ posicao_calculadaStr2);
           break;
           }
-          case 'J': { //sets intercept of the laser
+          case CONFIGURAR_ZERO_LASER: { //sets intercept of the laser
             String  x = data.substring(1);
             zero_laser = x.toFloat();
           break;
           }
           
           
-          case 'I': // Inicia o processo de calibração
+          case INICIAR_CALIBRACAO: // Inicia o processo de calibração
             calibracao();
     
           break;
     
-          case 'U': { //Insere constante de calibração dos motores
+          case INSERIR_CONSTANTES_CALIBRACAO: { //Insere constante de calibração dos motores
             String x = data.substring(1);
             if(motor == 1){
               constanteCalibracao1 = x.toFloat();
@@ -208,27 +208,27 @@ void VerificarSerial(){
           }
     
     
-          case 'S': // ativa a funcionalidade do sensor indutivo novamente
+          case ATIVAR_SENSOR_INDUTIVO: // ativa a funcionalidade do sensor indutivo novamente
             motorParou1 = 0;
             Serial.print("\nSensor indutivo ativado"); //Printa a constante de calibração no app do VSCode 
           break;
     
-          case 'M': //Função para mudar qual motor está sendo utilizado.
+          case ALTERAR_PARA_MOTOR_2: //Função para mudar qual motor está sendo utilizado.
     
             motor = '2';
             Serial.println('u'); //Segundo motor sendo operado!
           break;
     
-          case 'R': //Função para mudar qual motor está sendo utilizado.
+          case ALTERAR_PARA_MOTOR_1: //Função para mudar qual motor está sendo utilizado.
             motor = '1';
             Serial.println('U');//Primeiro motor sendo operado!
           break;
     
-          case 'K':
+          case SUBSIDENCIA:
             subsidencia(); // Função que movimenta o motor para frente e para trás (2 voltas completas) ativando o mecanismo de subsidência
           break;
     
-          case 'T': { // recebe todas as informações do motor de uma vez e aciona o motor
+          case ENVIAR_CONFIG_COMPLETA: { // recebe todas as informações do motor de uma vez e aciona o motor
             String x = data.substring(1);
     
             //código para separar as strings 
@@ -248,11 +248,11 @@ void VerificarSerial(){
               digitalWrite(PIN_ENABLE_1, 1);
               //Serial.println("/Motor 1 ligado!");
               //recebe pulsos
-              receivedPulsesDistance1 = pulso.toFloat(); //value for the steps
+              qtdPulsosMotor1 = pulso.toFloat(); //value for the steps
               //Serial.print("/Pulsos motor 1: ");
              // Serial.println(receivedPulsesDistance1);
               //recebe velocidade
-              receivedDelay1 = velocidade.toFloat();
+              velocidadeMaxima = velocidade.toFloat();
               //Serial.println("/Velocidade do motor 1: " + velocidade + " Pulsos por segundo");
               if(direcao == "B"){
                 Serial.println("b"); // Printa a mensagem no aplicativo do vs code:: Direcão: Para baixo
@@ -262,7 +262,9 @@ void VerificarSerial(){
                   Serial.println("c"); // Printa a mensagem no aplicativo do vs code:: Direcão: Para cima
                   direcao1 = -1;
               }
-              if(mover == "H"){moverUniforme1();}
+              if(mover == "H"){
+                moverUniforme(motor1, qtdPulsosMotor1, velocidadeMaxima);
+              }
     
               
             }
@@ -271,12 +273,12 @@ void VerificarSerial(){
               digitalWrite(PIN_ENABLE_2, 1);
               //Serial.println("/Motor 2 ligado!");
               //recebe pulsos
-              receivedPulsesDistance2 = pulso.toFloat(); //value for the steps
+              qtdPulsosMotor2 = pulso.toFloat(); //value for the steps
               //Serial.print("/Pulsos motor 2: ");
               //Serial.println(receivedPulsesDistance2);
               //recebe velocidade
               //Serial.println("/Velocidade do motor 2: " + x + " Pulsos por segundo");
-              receivedDelay2 = velocidade.toFloat();
+              velocidadeMaxima = velocidade.toFloat();
               if(direcao == "B"){
                 Serial.println("B"); // Printa a mensagem no aplicativo do vs code:: Direcão: Para baixo
                 direcao2 = 1;
@@ -285,7 +287,9 @@ void VerificarSerial(){
                   Serial.println("C"); // Printa a mensagem no aplicativo do vs code:: Direcão: Para cima
                   direcao2 = -1;
               }
-              if(mover == "H"){moverUniforme2();}
+              if(mover == "H"){
+                moverUniforme(motor2, qtdPulsosMotor2, velocidadeMaxima);
+              }
               
             }
           break;
