@@ -16,19 +16,13 @@ void DesabilitarMotor(AccelStepper* motor, int enablePin);
 
 void VerificarSerial();
 
+void moverMOtor();
+
+void moverAcelerado();
+
 void moverUniforme();
 
-void moverAcelerado1();
-
-void moverAcelerado2();
-
-void moverUniforme1();
-
-void moverUniforme2();
-
-void paraMotor1();
-
-void paraMotor2();
+void paraMotor();
 
 void calibracao();
 

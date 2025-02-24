@@ -8,7 +8,7 @@ AccelStepper* motor1 = nullptr;
 AccelStepper* motor2 = nullptr;
 
 //Declaração de variáveis para paramêtros do motor
-int velocidadeMaxima, aceleracaoMaxima, velocidade;
+int velocidadeMaxima = 0, aceleracaoMaxima = 0, velocidade = 0;
 
 void setup() {
   // Configura os pinos de ENABLE como saída

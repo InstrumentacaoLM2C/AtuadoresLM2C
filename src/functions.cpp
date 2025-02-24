@@ -30,50 +30,94 @@ int moverMotor(AccelStepper* motor, long distancia) {
     return OK;
 }
 
-void moverAcelerado1(){
-    motor1.setAcceleration(1000);
-    motor1.setMaxSpeed();
-    motor1.move();
+void moverAcelerado(AccelStepper* motor, int velocidadeMaxima, long distancia) {
+    if (!motor) { // Verifica se o ponteiro do motor é válido
+        return; // Retorna sem fazer nada se o ponteiro for inválido
+    }
+
+    // Configura a aceleração e a velocidade máxima do motor
+    motor->setAcceleration(1000); // Define a aceleração em passos por segundo ao quadrado
+    motor->setMaxSpeed(velocidadeMaxima); // Define a velocidade máxima em passos por segundo
+
+    // Define a posição alvo
+    motor->move(distancia);
+
+    // Executa o movimento até que o motor alcance a posição desejada
+    while (motor->distanceToGo() != 0) {
+        motor->run();
+    }
 }
 
-void moverAcelerado2(){
-    motor2.setAcceleration(1000);
-    motor2.setMaxSpeed();
-    motor2.move();
+
+
+void moverUniforme(AccelStepper* motor, int velocidadeMaxima, long distancia){
+    if (!motor) { // Verifica se o ponteiro do motor é válido
+        return; // Retorna sem fazer nada se o ponteiro for inválido
+    }
+
+    // Configura a aceleração e a velocidade máxima do motor
+    motor->setAcceleration(1000); // Define a aceleração em passos por segundo ao quadrado
+    motor->setMaxSpeed(velocidadeMaxima); // Define a velocidade máxima em passos por segundo
+
+    // Define a posição alvo
+    motor->move(distancia);
+
+    // Executa o movimento até que o motor alcance a posição desejada
+    while (motor->distanceToGo() != 0) {
+        motor->run();
+    }
 }
 
-void moverUniforme1(){
-    motor1.setAcceleration(20000);
-    motor1.setMaxSpeed();
-    motor1.move();
+
+void paraMotor1(AccelStepper* motor){
+    if (!motor) { // Verifica se o ponteiro do motor é válido
+        return; // Retorna sem fazer nada se o ponteiro for inválido
+    }
+
+    Serial.println("y"); // Imprime "y" no monitor serial para indicar que o motor está parando
+
+    motor->stop(); // Para o motor imediatamente
+    motor->setCurrentPosition(0); // Redefine a posição atual do motor para 0
+    motor->disableOutputs(); // Desabilita as saídas do motor (desliga a energia)
 }
 
-void moverUniforme2(){
-    motor2.setAcceleration(20000);
-    motor2.setMaxSpeed();
-    motor2.move();
-}
 
-void paraMotor1(){
+
+void calibracao(){
     
 }
 
-void paraMotor2(){
+void subsidencia(AccelStepper* motor, int velocidadeMaxima, int aceleracao, long distancia){
+    digitalWrite(PIN_ENABLE_1, HIGH);
+    motor->setMaxSpeed(velocidadeMaxima);
+    motor->setAcceleration(aceleracao);
+    motor->move(distancia);
+    
+    while(motor->distanceToGo() != 0){
+        motor->run();
+    }
 
+    delay(50);
+
+    motor->move(-distancia);
+    while(motor->distanceToGo() != 0){
+        motor->run();
+    }
+
+    delay(50);
+    digitalWrite(PIN_ENABLE_1, LOW);
 }
 
-void calibracao(){
-
-}
-
-void subsidencia(){
-
+void habilitarMotor(AccelStepper* motor, int enablePin){
+    if(motor){
+        digitalWrite(enablePin, HIGH); // Habilita o motor
+    }
 }
 
 // Função para desabilitar um motor
 void desabilitarMotor(AccelStepper* motor, int enablePin) {
     if (motor) {
-        digitalWrite(enablePin, HIGH); // Desabilita o motor
+        digitalWrite(enablePin, LOW); // Desabilita o motor
     }
 }
 
