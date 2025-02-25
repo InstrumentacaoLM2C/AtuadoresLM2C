@@ -78,7 +78,7 @@ void VerificarSerial(AccelStepper* motor1, AccelStepper* motor2, int velocidadeM
             }
           break;
           }
-          case 'G':     //First character is an G = motor accelerates
+          case ACELERAR_MOTOR:     //First character is an G = motor accelerates
             if(motor == '1'){
               Serial.println("a"); // Printa a mensagem no aplicativo do vs code:: O motor 1 está se movendo com aceleração!
               moverAcelerado(motor1, qtdPulsosMotor1, velocidadeMaxima);
