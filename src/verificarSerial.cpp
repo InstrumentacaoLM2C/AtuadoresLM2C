@@ -4,6 +4,17 @@
 //nmhkjh
 
 void VerificarSerial(AccelStepper* motor1, AccelStepper* motor2, int velocidadeMaxima, int velocidade, int aceleracaoMaxima){
+  
+
+  //Definição de variáveis
+  String posicao_calculadaStr1, posicao_calculadaStr2;
+
+  int qtdPulsosMotor1, qtdPulsosMotor2, aceleracao1, aceleracao2, 
+  posicao_calculada1, posicao_calculada2, parar_calibracao,
+  constanteCalibracao1, constanteCalibracao2, motorParou1;
+
+  float receivedPulsesDistance1, receivedPulsesDistance2,
+  receivedDelay1, receivedDelay2, zero_laser;
 
     char motor = '1';
     char direcao1 = '1';
@@ -225,7 +236,7 @@ void VerificarSerial(AccelStepper* motor1, AccelStepper* motor2, int velocidadeM
           break;
     
           case SUBSIDENCIA:
-            subsidencia(); // Função que movimenta o motor para frente e para trás (2 voltas completas) ativando o mecanismo de subsidência
+            //subsidencia(); // Função que movimenta o motor para frente e para trás (2 voltas completas) ativando o mecanismo de subsidência
           break;
     
           case ENVIAR_CONFIG_COMPLETA: { // recebe todas as informações do motor de uma vez e aciona o motor

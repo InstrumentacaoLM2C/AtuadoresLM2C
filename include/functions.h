@@ -26,6 +26,6 @@ void paraMotor(AccelStepper* motor);
 
 void calibracao();
 
-void subsidencia();
+void subsidencia(AccelStepper* motor, int velocidadeMaxima, int aceleracao, long distancia);
 
 #endif

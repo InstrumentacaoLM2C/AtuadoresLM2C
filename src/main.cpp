@@ -4,7 +4,7 @@
 #include <AccelStepper.h>
 
 //Declaração de variáveis para motores
-AccelStepper* motor1 = nullptr;
+AccelStepper* motor1 = nullptr; 
 AccelStepper* motor2 = nullptr;
 
 //Declaração de variáveis para paramêtros do motor
