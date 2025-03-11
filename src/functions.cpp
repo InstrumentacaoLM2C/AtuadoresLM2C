@@ -56,6 +56,8 @@ void moverUniforme(AccelStepper* motor, long distancia, int velocidadeMaxima){
         return; // Retorna sem fazer nada se o ponteiro for inválido
     }
 
+    Serial.println("Motor movendo");
+
     // Configura a aceleração e a velocidade máxima do motor
     motor->setAcceleration(1000); // Define a aceleração em passos por segundo ao quadrado
     motor->setMaxSpeed(velocidadeMaxima); // Define a velocidade máxima em passos por segundo
@@ -69,6 +71,37 @@ void moverUniforme(AccelStepper* motor, long distancia, int velocidadeMaxima){
     }
 }
 
+void moverSimultaneo(AccelStepper* motor1, AccelStepper* motor2, int distancia1, int distancia2, int velocidadeMaxima1, int velocidadeMaxima2) {
+    Serial.println("Motores movendo simultaneamente");
+
+    motor1->setAcceleration(1000);
+    motor1->setMaxSpeed(velocidadeMaxima1);
+    motor2->setAcceleration(1000);
+    motor2->setMaxSpeed(velocidadeMaxima2);
+
+    motor1->move(distancia1);
+    motor2->move(distancia2);
+
+    while((motor1->distanceToGo() != 0) && (motor2->distanceToGo() != 0) ){
+        motor1->run();
+        motor2->run();
+    }
+}
+
+void paraMotorSimultaneo(AccelStepper* motor1, AccelStepper* motor2){
+    if(!motor1 || !motor2) {
+        return;
+    }
+
+    Serial.println("y");
+    
+    motor1->stop();
+    motor1->setCurrentPosition(0);
+    motor1->disableOutputs();
+    motor2->stop();
+    motor2->setCurrentPosition(0);
+    motor2->disableOutputs();
+}
 
 void paraMotor(AccelStepper* motor){
     if (!motor) { // Verifica se o ponteiro do motor é válido

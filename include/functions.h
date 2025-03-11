@@ -22,6 +22,10 @@ void moverAcelerado(AccelStepper* motor, long distancia, int velocidadeMaxima);
 
 void moverUniforme(AccelStepper* motor, long distancia, int velocidadeMaxima);
 
+void moverSimultaneo(AccelStepper* motor1, AccelStepper* motor2, int distancia1, int distancia2, int velocidadeMaxima1, int velocidadeMaxima2);
+
+void paraMotorSimultaneo(AccelStepper* motor1, AccelStepper* motor2);
+
 void paraMotor(AccelStepper* motor);
 
 void calibracao();

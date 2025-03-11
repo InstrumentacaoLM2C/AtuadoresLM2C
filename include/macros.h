@@ -26,6 +26,7 @@
 #define CONFIGURAR_ZERO_LASER               'J'
 #define SUBSIDENCIA                         'K'
 #define ALTERAR_PARA_MOTOR_2                'M'
+#define ALTERAR_PARA_MOTORES_SIMULTANEOS    'm'
 #define PARAR_MOTOR                         'n'
 #define PARAR_CALIBRACAO                    'N'
 #define POSICAO_MOTOR_1                     'O'
@@ -37,8 +38,10 @@
 #define DEFINIR_VELOCIDADE                  'V'
 #define MSG_MOTOR_MOVENDO_COM_ACELERACAO    'X'
 #define MSG_MOTOR_MOVENDO_SEM_ACELERACAO    'x'
+#define MOVER_MOTORES_SIMULTANEOS           'W'
 #define MOTOR_1                              1
 #define MOTOR_2                              2
+#define MOTORES_SIMULTANEOS                  3  
 #define DIRECAO_MOTOR_1_BAIXO               "Mover motor 1 para baixo"
 #define DIRECAO_MOTOR_2_BAIXO               "Mover motor 2 para baixo"
 
