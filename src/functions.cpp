@@ -1,6 +1,9 @@
 #include "../include/functions.h"
 #include "../include/macros.h"
+#include "../include/globals.h"
 #include <AccelStepper.h>
+
+bool pararMotores = false;
 
 AccelStepper* CriarMotor(int stepPin, int dirPin, int enablePin, int velocidadeMaxima, int aceleracao, int velocidade) {
     // Aloca dinamicamente um objeto AccelStepper
@@ -56,7 +59,7 @@ void moverUniforme(AccelStepper* motor, long distancia, int velocidadeMaxima){
         return; // Retorna sem fazer nada se o ponteiro for inválido
     }
 
-    Serial.println("Motor movendo");
+    //Serial.println("Motor movendo");
 
     // Configura a aceleração e a velocidade máxima do motor
     motor->setAcceleration(1000); // Define a aceleração em passos por segundo ao quadrado
@@ -71,36 +74,75 @@ void moverUniforme(AccelStepper* motor, long distancia, int velocidadeMaxima){
     }
 }
 
-void moverSimultaneo(AccelStepper* motor1, AccelStepper* motor2, int distancia1, int distancia2, int velocidadeMaxima1, int velocidadeMaxima2) {
-    Serial.println("Motores movendo simultaneamente");
+void moverSimultaneo(AccelStepper* motor1, AccelStepper* motor2, int distancia1, int distancia2, int velocidadeMaxima1, int velocidadeMaxima2, String direcao) {
+    //Serial.println("Motores movendo simultaneamente");
 
-    motor1->setAcceleration(1000);
-    motor1->setMaxSpeed(velocidadeMaxima1);
-    motor2->setAcceleration(1000);
-    motor2->setMaxSpeed(velocidadeMaxima2);
 
-    motor1->move(distancia1);
-    motor2->move(distancia2);
+    long posicaoDesejada1, posicaoDesejada2;
 
-    while((motor1->distanceToGo() != 0) && (motor2->distanceToGo() != 0) ){
-        motor1->run();
-        motor2->run();
+    // Configura aceleração e velocidade máxima dos motores
+
+    if(direcao == "C"){
+        motor1->setMaxSpeed(velocidadeMaxima1);
+        motor2->setMaxSpeed(-velocidadeMaxima2);
+    } else if(direcao == "B") {
+        motor1->setMaxSpeed(-velocidadeMaxima1);
+        motor2->setMaxSpeed(velocidadeMaxima2);
     }
+
+    pararMotores = false;
+
+    motor1->setAcceleration(1000000); // Aceleração muito alta para movimento uniforme
+    motor2->setAcceleration(1000000); // Aceleração muito alta para movimento uniforme
+    posicaoDesejada1 = motor1->currentPosition() + distancia1;
+    posicaoDesejada2 = motor2->currentPosition() + distancia2;
+    motor1->moveTo(posicaoDesejada1);
+    motor2->moveTo(posicaoDesejada2);
+
+    // Loop enquanto pelo menos um motor ainda não atingiu a posição desejada
+    while ((motor1->currentPosition() != posicaoDesejada1) || (motor2->currentPosition() != posicaoDesejada2)) {
+        // Executa o motor 1 se ainda não atingiu a posição desejada
+        if(pararMotores = true){
+            break;
+        }
+
+        if (motor1->currentPosition() != posicaoDesejada1) {
+            motor1->run();
+            /*Serial.print("Motor 1 - Posição atual: ");
+            Serial.print(motor1->currentPosition());
+            Serial.print(" / Posição desejada: ");
+            Serial.println(posicaoDesejada1);*/
+        }
+
+        // Executa o motor 2 se ainda não atingiu a posição desejada
+        if (motor2->currentPosition() != posicaoDesejada2) {
+            motor2->run();
+            /*Serial.print("Motor 2 - Posição atual: ");
+            Serial.print(motor2->currentPosition());
+            Serial.print(" / Posição desejada: ");
+            Serial.println(posicaoDesejada2);*/
+        }
+    }
+
+    //Serial.println("Motores pararam");
+    Serial.println('y');
 }
 
 void paraMotorSimultaneo(AccelStepper* motor1, AccelStepper* motor2){
-    if(!motor1 || !motor2) {
+    if((!motor1) || (!motor2)) {
         return;
     }
 
-    Serial.println("y");
-    
+    pararMotores = true;
+
     motor1->stop();
-    motor1->setCurrentPosition(0);
-    motor1->disableOutputs();
     motor2->stop();
-    motor2->setCurrentPosition(0);
+    motor1->disableOutputs(); 
     motor2->disableOutputs();
+    motor1->setCurrentPosition(0);
+    motor2->setCurrentPosition(0);
+
+    Serial.println('y'); // Imprime "y" no monitor serial para indicar que o motor está parando
 }
 
 void paraMotor(AccelStepper* motor){
@@ -108,11 +150,12 @@ void paraMotor(AccelStepper* motor){
         return; // Retorna sem fazer nada se o ponteiro for inválido
     }
 
-    Serial.println("y"); // Imprime "y" no monitor serial para indicar que o motor está parando
-
     motor->stop(); // Para o motor imediatamente
-    motor->setCurrentPosition(0); // Redefine a posição atual do motor para 0
     motor->disableOutputs(); // Desabilita as saídas do motor (desliga a energia)
+    motor->setCurrentPosition(0); // Redefine a posição atual do motor para 
+
+    Serial.println('y'); // Imprime "y" no monitor serial para indicar que o motor está parando
+    
 }
 
 

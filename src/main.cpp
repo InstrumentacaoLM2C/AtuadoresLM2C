@@ -11,6 +11,9 @@ AccelStepper* motor2 = nullptr;
 int velocidadeMaxima = 0, aceleracaoMaxima = 0, velocidade = 0;
 
 void setup() {
+
+  Serial.begin(115200);
+
   // Configura os pinos de ENABLE como saída
   pinMode(PIN_ENABLE_1, OUTPUT);
   pinMode(PIN_ENABLE_2, OUTPUT);
